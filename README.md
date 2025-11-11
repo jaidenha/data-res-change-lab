@@ -60,16 +60,15 @@ Press `Ctrl + C` in the terminal where the server is running.
 ```
 .
 ├── server.js             # Main Express server and API routes
-├── html/                 # HTML pages
-│   ├── index.html        # Landing page
-│   └── simulation.html   # Simulation page (chatbot interface)
 ├── src/
 │   └── public/           # Static files served to browser
+│       ├── index.html        # Landing page
+│       ├── simulation.html   # Simulation page (chatbot interface)
 │       ├── css/
-│       │   └── style.css # Styles for all pages
+│       │   └── style.css     # Styles for all pages
 │       ├── js/
-│       │   └── main.js   # Client-side JavaScript
-│       └── images/       # Image assets
+│       │   └── main.js       # Client-side JavaScript
+│       └── images/           # Image assets
 ├── package.json          # Project dependencies and scripts
 ├── .gitignore           # Git ignore rules
 └── README.md            # This file
@@ -83,9 +82,11 @@ Press `Ctrl + C` in the terminal where the server is running.
 
 ## Available Routes
 
-- `/` - Landing page
-- `/simulation` - Pitch simulation interface
+- `/` or `/index.html` - Landing page
+- `/simulation.html` - Pitch simulation interface
 - `/api/data` - Example API endpoint (GET/POST)
+
+All HTML pages are served as static files from the `src/public` directory.
 
 ## Development Workflow
 

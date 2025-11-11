@@ -9,18 +9,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'src/public')));
 
-// ========== Routes ==========
-
-// Serve main HTML page
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html', 'index.html'));
-});
-
-// Serve simulation page
-app.get('/simulation', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html', 'simulation.html'));
-});
-
 // ========== API Endpoints ==========
 
 // GET - Example data endpoint
