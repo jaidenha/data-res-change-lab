@@ -1,6 +1,6 @@
-# YC Pitch Simulator
+# Pitch Simulator
 
-A web application that simulates Y Combinator investor meetings, helping founders practice their startup pitches and prepare for real funding conversations.
+A web application that simulates investor pitch meetings, helping founders practice their startup pitches and prepare for real funding conversations.
 
 ## Getting Started
 
