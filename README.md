@@ -1,6 +1,6 @@
-# YC Pitch Simulator
+# Donation Pitch Simulator
 
-A web application that simulates Y Combinator investor meetings, helping founders practice their startup pitches and prepare for real funding conversations.
+A web application that simulates Donation investor meetings, helping founders practice their startup pitches and prepare for real funding conversations.
 
 ## Getting Started
 

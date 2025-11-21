@@ -7,11 +7,15 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'html')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not found' });
+// Routes
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../views', 'index.html'));
+});
+
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'Hello from the API!' });
 });
 
 // Start server

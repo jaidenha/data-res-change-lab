@@ -1,0 +1,6 @@
+openai
+python-dotenv
+requests
+pyaudio
+flask
+flask-cors
