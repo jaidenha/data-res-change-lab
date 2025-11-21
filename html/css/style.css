@@ -500,6 +500,7 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    justify-content: center;
 }
 
 .input-mode-toggle {
@@ -537,27 +538,27 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 1rem;
+    width: 100%;
 }
 
 .btn-record {
     background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
     color: white;
     border: none;
-    padding: 1rem 2rem;
-    border-radius: 50%;
+    padding: 1rem 3rem;
+    border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
-    min-width: 80px;
-    min-height: 80px;
     justify-content: center;
+    min-width: 200px;
+    min-height: 60px;
 }
 
 .btn-record:hover {
@@ -580,11 +581,11 @@ footer {
 }
 
 #recordIcon {
-    font-size: 2rem;
+    display: none;
 }
 
 #recordText {
-    font-size: 0.85rem;
+    font-size: 1rem;
 }
 
 .recording-status {

@@ -128,6 +128,11 @@ def synthesize_with_elevenlabs(text: str, session_id: str) -> str:
     # Use absolute path to project root's audio_out directory
     output_path = audio_out_dir / f"reply_{session_id}.mp3"
     
+    # Delete old audio file if it exists
+    if output_path.exists():
+        os.remove(output_path)
+        print(f"[TTS] Deleted old audio file: {output_path}")
+    
     # Write the audio file in chunks to ensure complete write
     with open(output_path, "wb") as f:
         for chunk in resp.iter_content(chunk_size=8192):
@@ -180,7 +185,7 @@ def get_system_prompt(case_study: str) -> str:
             "try to be too familiar or casual, or don't have a clear ask. "
             
             # CONVERSATION PROGRESSION
-            "Start by asking what they do and why it matters - get to the point quickly. "
+            "Start by politely asking about their work and its purpose, while keeping it focused. "
             "If they're focused and professional, ask about measurable outcomes. "
             "Then probe on budget and sustainability. "
             "If they maintain professionalism and show clear impact, ask how you'd be kept informed. "
