@@ -10,18 +10,18 @@ A web application that simulates donor pitch meetings using AI-powered voice con
 ├── python/
 │   ├── api.py               # Flask API server (STT, LLM, TTS pipeline)
 │   └── chatbot.py           # [Legacy/unused chatbot logic]
-├── html/                    # Original HTML files
-│   ├── index.html           # Landing page
-│   ├── simulation.html      # Pitch simulation interface
-│   ├── case-studies.html    # Case study selection page
-│   ├── preview.html         # Donor persona preview
-│   ├── css/
-│   │   └── style.css        # Styles
-│   └── js/
-│       ├── main.js          # Client-side logic (recording, API calls)
-│       ├── index.js         # Landing page scripts
-│       └── case-studies.js  # Case study page scripts
-├── src/public/              # Duplicate of html/ (for deployment flexibility)
+├── public/
+│   └── html/                # HTML files, CSS, and JavaScript
+│       ├── index.html       # Landing page
+│       ├── simulation.html  # Pitch simulation interface
+│       ├── case-studies.html    # Case study selection page
+│       ├── preview.html     # Donor persona preview
+│       ├── css/
+│       │   └── style.css    # Styles
+│       └── js/
+│           ├── main.js          # Client-side logic (recording, API calls)
+│           ├── index.js         # Landing page scripts
+│           └── case-studies.js  # Case study page scripts
 ├── audio_out/               # Generated audio responses (gitignored)
 ├── package.json             # Node.js dependencies
 ├── requirements.txt         # Python dependencies

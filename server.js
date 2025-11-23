@@ -7,7 +7,23 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'html')));
+
+// Serve static files (css, js)
+app.use('/css', express.static(path.join(__dirname, 'public/css')));
+app.use('/js', express.static(path.join(__dirname, 'public/js')));
+
+// Serve HTML files
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/html/index.html'));
+});
+
+app.get('/:page.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/html', `${req.params.page}.html`), (err) => {
+    if (err) {
+      res.status(404).json({ error: 'Not found' });
+    }
+  });
+});
 
 // 404 handler
 app.use((req, res) => {
