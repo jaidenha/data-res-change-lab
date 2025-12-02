@@ -21,6 +21,13 @@ let audioChunks = [];
 let isRecording = false;
 let recordingStartTime = 0;
 
+// Feedback tracking
+let voiceExchangeCount = 0;
+let userMessages = [];
+let aiResponses = [];
+let feedbackShown = false;
+const FEEDBACK_THRESHOLD = 8;
+
 // Initialize chatbot
 document.addEventListener('DOMContentLoaded', () => {
     // Only run on simulation page
@@ -244,14 +251,25 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Add user's transcribed message
             addMessage(data.transcript, true);
+            userMessages.push(data.transcript);
             
             // Add AI's text response
             addMessage(data.reply, false);
+            aiResponses.push(data.reply);
             
             // Add and play audio response
             const audioUrl = `${API_URL}${data.audio_url}`;
             console.log('[Voice] Audio URL:', audioUrl);
             addAudioMessage(audioUrl);
+            
+            // Increment voice exchange count and check if feedback should be shown
+            voiceExchangeCount++;
+            console.log('[Feedback] Voice exchanges:', voiceExchangeCount);
+            if (voiceExchangeCount >= FEEDBACK_THRESHOLD && !feedbackShown) {
+                console.log('[Feedback] Threshold reached! Showing feedback modal...');
+                feedbackShown = true;
+                setTimeout(() => showFeedbackModal(), 2000);
+            }
             
         } catch (error) {
             removeLoading();
@@ -384,4 +402,131 @@ document.addEventListener('DOMContentLoaded', () => {
             sendMessage();
         }
     });
+    
+    // Feedback modal functions
+    function generateFeedback() {
+        // Analyze conversation
+        const avgUserMessageLength = userMessages.reduce((sum, msg) => sum + msg.split(' ').length, 0) / userMessages.length || 0;
+        const hasNumbers = userMessages.some(msg => /\d+/.test(msg));
+        const hasProfessionalTone = userMessages.some(msg => 
+            /(budget|impact|metrics|outcomes|data|results|roi)/i.test(msg)
+        );
+        const hasCasualLanguage = userMessages.some(msg => 
+            /(hey|hi|yeah|cool|awesome|basically)/i.test(msg)
+        );
+        
+        // Calculate score (0-100)
+        let score = 65;
+        if (hasProfessionalTone) score += 15;
+        if (hasNumbers) score += 10;
+        if (avgUserMessageLength > 10 && avgUserMessageLength < 50) score += 10;
+        if (!hasCasualLanguage) score += 5;
+        if (voiceExchangeCount >= 10) score += 5;
+        
+        const strengths = [];
+        const improvements = [];
+        
+        // Generate strengths
+        if (hasProfessionalTone) {
+            strengths.push('Used professional language and industry terminology');
+        }
+        if (hasNumbers) {
+            strengths.push('Included specific numbers and metrics in your pitch');
+        }
+        if (avgUserMessageLength > 10) {
+            strengths.push('Provided detailed, thoughtful responses');
+        }
+        if (voiceExchangeCount >= 10) {
+            strengths.push('Maintained engagement throughout the conversation');
+        }
+        
+        // Generate improvements
+        if (!hasProfessionalTone) {
+            improvements.push('Incorporate more professional terminology and focus on measurable outcomes');
+        }
+        if (!hasNumbers) {
+            improvements.push('Include specific numbers, budgets, and metrics to strengthen your pitch');
+        }
+        if (hasCasualLanguage) {
+            improvements.push('Maintain a more professional tone and avoid casual language');
+        }
+        if (avgUserMessageLength < 10) {
+            improvements.push('Provide more detailed explanations and context in your responses');
+        }
+        if (avgUserMessageLength > 50) {
+            improvements.push('Keep responses more concise and focused to respect the donor\'s time');
+        }
+        
+        // Default fallbacks
+        if (strengths.length === 0) {
+            strengths.push('Completed the practice session and engaged with the simulation');
+        }
+        if (improvements.length === 0) {
+            improvements.push('Continue practicing to refine your pitch delivery');
+        }
+        
+        return {
+            score: Math.min(100, score),
+            strengths,
+            improvements,
+            insights: {
+                exchanges: voiceExchangeCount,
+                avgLength: Math.round(avgUserMessageLength),
+                professionalTerms: userMessages.filter(msg => 
+                    /(budget|impact|metrics|outcomes|data|results)/i.test(msg)
+                ).length
+            }
+        };
+    }
+    
+    function showFeedbackModal() {
+        const modal = document.getElementById('feedbackModal');
+        if (!modal) return;
+        
+        const feedback = generateFeedback();
+        
+        // Populate score
+        document.getElementById('performanceScore').textContent = `${feedback.score}/100`;
+        
+        // Populate strengths
+        const strengthsList = document.getElementById('strengthsList');
+        strengthsList.innerHTML = feedback.strengths.map(s => `<li>${s}</li>`).join('');
+        
+        // Populate improvements
+        const improvementsList = document.getElementById('improvementsList');
+        improvementsList.innerHTML = feedback.improvements.map(i => `<li>${i}</li>`).join('');
+        
+        // Populate insights
+        const insightsList = document.getElementById('insightsList');
+        insightsList.innerHTML = `
+            <div class="insight-card">
+                <div class="insight-value">${feedback.insights.exchanges}</div>
+                <div class="insight-label">Exchanges</div>
+            </div>
+            <div class="insight-card">
+                <div class="insight-value">${feedback.insights.avgLength}</div>
+                <div class="insight-label">Avg Words/Response</div>
+            </div>
+            <div class="insight-card">
+                <div class="insight-value">${feedback.insights.professionalTerms}</div>
+                <div class="insight-label">Professional Terms</div>
+            </div>
+        `;
+        
+        modal.classList.add('show');
+        
+        // Set up modal event handlers
+        document.getElementById('closeFeedback').onclick = () => modal.classList.remove('show');
+        document.getElementById('continuePractice').onclick = () => modal.classList.remove('show');
+        document.getElementById('startNewSession').onclick = () => {
+            window.location.reload();
+        };
+        
+        // Close on outside click
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+            }
+        };
+    }
 });
