@@ -82,6 +82,42 @@
             </div>
         </main>
     </div>
+    
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎯 Session Feedback</h2>
+                <button class="modal-close" id="closeFeedback">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="feedback-section">
+                    <h3>Overall Performance</h3>
+                    <div class="performance-score" id="performanceScore"></div>
+                </div>
+                
+                <div class="feedback-section">
+                    <h3>✅ Strengths</h3>
+                    <ul id="strengthsList" class="feedback-list"></ul>
+                </div>
+                
+                <div class="feedback-section">
+                    <h3>💡 Areas for Improvement</h3>
+                    <ul id="improvementsList" class="feedback-list"></ul>
+                </div>
+                
+                <div class="feedback-section">
+                    <h3>📊 Conversation Insights</h3>
+                    <div id="insightsList" class="insights-grid"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="continuePractice">Continue Practice</button>
+                <button class="btn-primary" id="startNewSession">Start New Session</button>
+            </div>
+        </div>
+    </div>
+    
     <script src="/js/main.js"></script>
 </body>
 </html>
